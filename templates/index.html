@@ -6,72 +6,88 @@
 {% endblock %}
 
 {% block body %}
-<form id="check_box_form" method="POST">
-    <div class="me-4 text-left">
-        <h4>Heading 0</h4>
-        <div class="d-flex mb-3">
-            {% set bg_class = checkbox_states.get('Check0') %}
-            <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
-                <input type="checkbox" class="form-check-input" id="Check0" name="selected_checks" value="Check0">
-                <label class="form-check-label" for="Check0">Check this out</label>
-            </div>
-            {% set bg_class = checkbox_states.get('Check1') %}
-            <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
-                <input type="checkbox" class="form-check-input" id="Check1" name="selected_checks" value="Check1">
-                <label class="form-check-label" for="Check1">Check this out</label>
-            </div>
-        </div>
-    </div>
-    <div class="me-4 text-left">
-        <h4>Heading 1</h4>
-        <div class="d-flex mb-3">
-            {% set bg_class = checkbox_states.get('Check2') %}
-            <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
-                <input type="checkbox" class="form-check-input" id="Check2" name="selected_checks" value="Check2">
-                <label class="form-check-label" for="Check2">Check me out</label>
-            </div>
-        </div>
-    </div>
-    <div class="text-left">
-        <h4>Heading 2</h4>
-        <div class="d-flex mb-3">
-            {% set bg_class = checkbox_states.get('Check3') %}
-            <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
-                <input type="checkbox" class="form-check-input" id="Check3" name="selected_checks" value="Check3">
-                <label class="form-check-label" for="Check3">Check it out</label>
-            </div>
-        </div>
-        <div class="d-flex mb-3">
-            <button type="submit" class="btn btn-primary" onclick="setFormAction('/launch_selected')">Launch Selected</button>
-            <button type="submit" class="btn btn-danger ms-2" onclick="setFormAction('/stop_selected')">Stop Selected</button>
-            <button type="button" class="btn btn-primary ms-2" id="setAButton">Set A</button>
-        </div>
+<div class="d-flex justify-content-between">
 
-        <script>
-            function setFormAction(actionUrl) {
-                document.getElementById('check_box_form').action = actionUrl;
-            }
-        </script>
-
-        <script>
-            document.getElementById("setAButton").addEventListener("click", function () {
-                // Deselect all checkboxes
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            
-                // Check specific boxes
-                ["Check0", "Check2", "Check3"].forEach(id => {
-                    const checkbox = document.getElementById(id);
-                    if (checkbox) checkbox.checked = true;
-                });
-            });
-        </script>
-
+    <!-- Left side: your form with checkboxes -->
+    <div class="me-4 w-50">
+        <form id="check_box_form" method="POST">
+            <div class="me-4 text-left">
+                <h4>Heading 0</h4>
+                <div class="d-flex mb-3">
+                    {% set bg_class = checkbox_states.get('Check0') %}
+                    <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
+                        <input type="checkbox" class="form-check-input" id="Check0" name="selected_checks" value="Check0">
+                        <label class="form-check-label" for="Check0">Check this out</label>
+                    </div>
+                    {% set bg_class = checkbox_states.get('Check1') %}
+                    <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
+                        <input type="checkbox" class="form-check-input" id="Check1" name="selected_checks" value="Check1">
+                        <label class="form-check-label" for="Check1">Check this out</label>
+                    </div>
+                </div>
+            </div>
+            <div class="me-4 text-left">
+                <h4>Heading 1</h4>
+                <div class="d-flex mb-3">
+                    {% set bg_class = checkbox_states.get('Check2') %}
+                    <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
+                        <input type="checkbox" class="form-check-input" id="Check2" name="selected_checks" value="Check2">
+                        <label class="form-check-label" for="Check2">Check me out</label>
+                    </div>
+                </div>
+            </div>
+            <div class="text-left">
+                <h4>Heading 2</h4>
+                <div class="d-flex mb-3">
+                    {% set bg_class = checkbox_states.get('Check3') %}
+                    <div class="form-check  ps-4 pe-2 rounded {{ bg_class }}">
+                        <input type="checkbox" class="form-check-input" id="Check3" name="selected_checks" value="Check3">
+                        <label class="form-check-label" for="Check3">Check it out</label>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <button type="submit" class="btn btn-primary" onclick="setFormAction('/launch_selected')">Launch Selected</button>
+                    <button type="submit" class="btn btn-danger ms-2" onclick="setFormAction('/stop_selected')">Stop Selected</button>
+                    <button type="button" class="btn btn-primary ms-2" id="setAButton">Set A</button>
+                </div>
+        
+                <script>
+                    function setFormAction(actionUrl) {
+                        document.getElementById('check_box_form').action = actionUrl;
+                    }
+                </script>
+        
+                <script>
+                    document.getElementById("setAButton").addEventListener("click", function () {
+                        // Deselect all checkboxes
+                        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    
+                        // Check specific boxes
+                        ["Check0", "Check2", "Check3"].forEach(id => {
+                            const checkbox = document.getElementById(id);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    });
+                </script>
+        
+            </div>
+        </form>
     </div>
-</form>
+
+    <!-- Right side: colored textboxes from Flask -->
+    <div class="ms-4 w-50">
+        <h4>System Messages</h4>
+        {% for item in textboxes %}
+            <div class="p-3 mb-3 text-white rounded {{ item.bg_class }}">
+                {{ item.text }}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock %}
 
 {% block footer %}
 {% endblock %}
 
 
-    

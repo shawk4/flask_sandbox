@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, url_for
+import subprocess
+
 
 app = Flask(__name__)
 
@@ -11,7 +13,16 @@ def index():
         "Check2": None,
         "Check3": "bg-success"
     }
-    return render_template("index.html", checkbox_states=checkbox_states)
+
+    timesync = subprocess.check_output(['timedatectl'], text=True)
+    textboxes = [
+        {'text': f"{timesync}", 'bg_class': 'bg-success'},
+        {'text': 'Error in Beta module', 'bg_class': 'bg-danger'},
+        {'text': 'Waiting for Gamma input...', 'bg_class': 'bg-warning'},
+        {'text': 'Delta is idle', 'bg_class': 'bg-secondary'},
+    ]
+
+    return render_template('index.html', checkbox_states=checkbox_states, textboxes=textboxes)
 
 @app.route("/launch_selected", methods=["POST"])
 def launch_selected():
